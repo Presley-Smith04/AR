@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <script src="https://aframe.io/releases/1.6.0/aframe.min.js"></script>
+    <!-- Geolocation  -->
+    <script type='text/javascript'
+        src='https://raw.githack.com/AR-js-org/AR.js/3.4.5/three.js/build/ar-threex-location-only.js'></script>
+
+    <script src="https://raw.githack.com/AR-js-org/AR.js/master/three.js/build/ar-threex.js"></script>
+    <script src="https://raw.githack.com/AR-js-org/AR.js/master/aframe/build/aframe-ar.js"></script>
+    
+    <title>Simple AR Scene</title>
+</head>
+
+<body style="margin: 0; overflow: hidden;">
+    <a-scene embedded arjs vr-mode-ui="enabled: false" raycaster cursor="rayOrigin: mouse" renderer="antialias: true; alpha: true" id="scene">
+        <a-camera gps-new-camera='gpsMinDistance: 5'></a-camera>
+        <a-entity
+            gltf-model="rigged_indoor-plant_animation_test/scene.gltf"
+            gps-new-entity-place="latitude: 43.06148588134908; longitude: -77.69597059872343"
+            scale="20 20 20"
+            animation="property: position; from: 0 0 0; to: 0 0 0; dur: 1000; loop: true"
+            clicker
+            mover>
+        </a-entity>
+    </a-scene>
+</body>
+
+<script>
+    let scene = document.querySelector("#scene");
+
+    // Loop to add the same model multiple times
+    for (let i = 0; i < 50; i++) {
+        let newSceneHTML = `
+            <a-entity
+                gltf-model="rigged_indoor-plant_animation_test/scene.gltf"
+                gps-new-entity-place="latitude: 43.06148588134908; longitude: -77.69597059872343"
+                scale="10 10 10"
+                animation="property: position; from: 0 0 0; to: 0 0 0; dur: 1000; loop: true"
+                position="0 ${i} 0"
+                clicker
+                mover
+            ></a-entity>
+        `;
+
+        scene.innerHTML += newSceneHTML
+    }
+
+    let rotationAngle = 0;
+    const radius = 100;
+    AFRAME.registerComponent('mover', {
+        tick: function () {
+            rotationAngle += 0.1;
+            const x = radius * Math.cos(rotationAngle);
+            const z = radius * Math.sin(rotationAngle);
+
+            // Move the model in a circular path
+            this.el.setAttribute('position', `${x} 0 ${z}`);
+        }
+    });
+</script>
+
+</html>
