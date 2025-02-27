@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AR.js Radio Tower</title>
+    <script src="https://aframe.io/releases/1.4.0/aframe.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/gh/AR-js-org/AR.js/aframe/build/aframe-ar-nft.min.js"></script>
+</head>
+<body style="margin: 0; overflow: hidden;">
+    <a-scene embedded arjs>
+        <!-- audio with analyser -->
+        <!-- analyser attached to sound file to update rings dynamically based on sound -->
+        <a-entity id="audio-source"
+            sound="src: url(assets/sci-fi-noise.mp3); autoplay: true; loop: true; positional: true; volume: 1; refDistance: 2"
+            analyser="enable: true">
+        </a-entity>
+
+        <!-- Default model -->
+        <a-marker preset="hiro">
+            <a-entity 
+                gltf-model="models/radio_tower.glb"
+                position="0 0 0"
+                scale="0.001 0.001 0.001">
+            </a-entity>
+
+            <!-- First Ring -->
+             <!-- Analyser and animations attached for updated reaction -->
+            <a-entity 
+                geometry="primitive: torus; radius: 0.7; radius-tubular: 0.01"
+                material="shader: standard; color: #00ffcc; opacity: 0.8; transparent: true; emissive: #00ffff"
+                position="0 1.5 0"
+                animation="property: rotation; from: 0 0 0; to: 0 360 0; dur: 3000; loop: true; easing: linear"
+                sound-analyser="target: #audio-source; property: scale; multiplier: 1.2">
+            </a-entity>
+
+            <!-- Second Ring -->
+            <!-- Analyser and animations attached for updated reaction -->
+
+            <a-entity 
+                geometry="primitive: torus; radius: 0.5; radius-tubular: 0.01"
+                material="shader: standard; color: #ff00ff; opacity: 0.6; transparent: true; emissive: #ff00ff"
+                position="0 1.5 0"
+                rotation="90 0 0"
+                animation="property: rotation; from: 90 0 0; to: 90 360 0; dur: 4000; loop: true; easing: linear"
+                sound-analyser="target: #audio-source; property: scale; multiplier: 1.5">
+            </a-entity>
+
+            <!-- Third Ring -->
+            <!-- Analyser and animations attached for updated reaction -->
+            <a-entity 
+                geometry="primitive: torus; radius: 0.3; radius-tubular: 0.01"
+                material="shader: standard; color: #ffff00; opacity: 0.7; transparent: true; emissive: #ffff00"
+                position="0 1.5 0"
+                rotation="0 0 90"
+                animation="property: rotation; from: 0 0 90; to: 0 360 90; dur: 5000; loop: true; easing: linear"
+                sound-analyser="target: #audio-source; property: scale; multiplier: 2">
+            </a-entity>
+
+        </a-marker>
+        
+        <a-entity camera></a-entity>
+    </a-scene>
+</body>
+</html>
